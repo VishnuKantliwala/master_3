@@ -54,7 +54,7 @@ $page_id=1;
                 </li>
 
                 <li>
-                    <h4 class="page-title-main">Home</h4>
+                    <h4 class="page-title-main">Daily Tasks</h4>
                 </li>
 
             </ul>
@@ -72,6 +72,83 @@ $page_id=1;
             <div class="content">
                 <!-- Start Content-->
                 <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="card-box">
+                                <h4 class="header-title">New Tasks</h4>
+                                
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="p-2 new-tasks-result">
+                                           
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- end row -->
+
+                            </div> <!-- end card-box -->
+                        </div><!-- end col -->
+
+                        <div class="col-4">
+                            <div class="card-box">
+                                <h4 class="header-title">Running Tasks</h4>                               
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="p-2 running-tasks-result">
+                                           
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- end row -->
+
+                            </div> <!-- end card-box -->
+                        </div><!-- end col -->
+
+                        <div class="col-4">
+                            <div class="card-box">
+                                <h4 class="header-title">Completed Tasks</h4>
+                                
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="p-2 completed-tasks-result">
+                                           
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- end row -->
+
+                            </div> <!-- end card-box -->
+                        </div><!-- end col -->
+                    </div>
+                    <!-- end row -->
+                    <div id="TaskModal" class="modal fade">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+
+                                    <h4 class="modal-title">Task instructions: <span id="task_name"></span></h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div style="width:100%;display:block;text-align:center; display:none"
+                                    class="taskLoader">
+                                    
+                                    <img src="./assets/images/loading.gif" />
+                                    <br/>
+                                </div>
+                                <div class="modal-body" id="TaskModalBody">
+                                    
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+
                 </div> <!-- container -->
             </div> <!-- content -->
             <?php
@@ -94,6 +171,9 @@ $page_id=1;
 
             <!-- App js -->
             <script src="assets/js/app.min.js"></script>
+
+            <script src="assets/js/gettasks.js"></script>
+
 
 
 

@@ -1,4 +1,5 @@
  <?php  
+ 
  include_once('../connect.php'); 
   include_once('commonFunc.php'); 
  
@@ -93,8 +94,46 @@
 		//$net_amount = floatval($total_amount) - floatval($gst_charge);
 		$entry_date = date("Y-m-d H:i:s");
 		$cn->insertdb("INSERT INTO `tbl_service_inclusion`(`service_confirmation_id`, `entry_person_id`, `product_id`,`short_desc`, `description`, `duration`, `yorm`, `quantity`, `service_rate`, `gst`, `gst_charge`, `net_amount`, `total_amount`, `entry_date`) VALUES (".$ServiceConfirmationNo.",".$_SESSION['user_id'].",".$product_id.",'".$shortDesc."','".$service_description."','".$txtDuration."','".$txtDurType."','".$qty."','".$cmnFnc->returnNumberInformate($rate)."','".$cmnFnc->returnNumberInformate($gst_rate)."','".$cmnFnc->returnNumberInformate($gst_charge)."','".$cmnFnc->returnNumberInformate($net_amount)."','".$cmnFnc->returnNumberInformate($total_amount)."','".$entry_date."')"); 
+
+		$service_inclusion_id = mysqli_insert_id($cn->getConnection());
+
+		$sqlGetClient = $cn->selectdb("SELECT shipper_id FROM tbl_service_confirmation sc, tbl_service_inclusion si WHERE sc.service_confirmation_id = si.service_confirmation_id AND service_inclusion_id=".$service_inclusion_id);
+		if( $cn->numRows($sqlGetClient) > 0 )
+		{
+			$rowGetClient = $cn->fetchAssoc($sqlGetClient);
+			$shipper_id = $rowGetClient['shipper_id'];
+		}
+		else
+		{
+			$shipper_id = 0;
+		}
+
 		
 		$sql = $cn->selectdb("UPDATE tbl_service_confirmation SET total_amount=total_amount + ".$cmnFnc->returnNumberInformate($total_amount).",net_amount=net_amount + ".$cmnFnc->returnNumberInformate($rate).",gst_charge=gst_charge + ".$cmnFnc->returnNumberInformate($gst_charge).",credit_amount=credit_amount + ".$cmnFnc->returnNumberInformate($total_amount)." WHERE service_confirmation_id = ".$ServiceConfirmationNo);
+
+
+		// Check first if it's an task
+		
+		$sqlIsTask = $cn->selectdb("SELECT is_task, name FROM tbl_product WHERE product_id=".$product_id);
+		if( $cn->numRows($sqlIsTask) > 0 )
+		{
+			$rowIsTask = $cn->fetchAssoc($sqlIsTask);
+			$is_task = $rowIsTask['is_task'];
+			$product_name = $rowIsTask['name'];
+		}
+		else
+		{
+			$is_task = "no";
+			$product_name = "Not assigned";
+		}		
+
+		// Make tasks
+		if($is_task == 'yes')
+		{
+			$sql = $cn->selectdb("INSERT INTO `tbl_task`( `service_inclusion_id`, `shipper_id`, `task_name`, `task_quantity`, `task_description`, `task_date`, `recordListingID`, `task_status`) VALUES (".$service_inclusion_id.",".$shipper_id.",'".$product_name."',".$qty.",'".$service_description."','".date("Y-m-d h:i:s")."',0,0)");
+		}
+
+
 	}
 	if($_GET['type'] == "updateServiceDetails")
 	{

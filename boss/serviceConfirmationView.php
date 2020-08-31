@@ -109,7 +109,7 @@ $page_id=25;
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                    <table id="datatable" class="table table-bordered dt-responsive nowrap">
+                                    <table id="datatable" class="table table-bordered dt-responsive">
                                         <thead>
                                             <tr>
                                                 

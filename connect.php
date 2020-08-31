@@ -1,7 +1,7 @@
 <?php
 $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
 $path = substr( dirname(__FILE__), strlen($_SERVER['DOCUMENT_ROOT']));
-
+date_default_timezone_set("Asia/Calcutta");
 $domain = $protocol . $_SERVER['HTTP_HOST'] . $path."/";
 //$domain=$_SERVER['HTTP_HOST'];
 /*
@@ -184,6 +184,12 @@ class connect {
 	// Get mysqli connection
 	public function getConnection() {
 		return $this->_connection;
+	}
+
+	public function getLastInsertedID()
+	{
+		// $rs=mysqli_query($this->_connection, $qry);
+		return mysqli_insert_id($this->_connection);
 	}
 
 	public function selectdb($qry)

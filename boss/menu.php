@@ -50,6 +50,17 @@
                         </ul>
 
                     </li>
+                    <li <?php if($page_id==29 OR $page_id==30 ) echo 'class="active"';?>>
+                        <a href="#" <?php if($page_id==2 OR $page_id==30) echo 'class="active"';?>>
+                            <i class="mdi mdi-texture"></i>
+                            <span> Tasks </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <ul class="nav-second-level" aria-expanded="false">
+                            <li><a href="assignedTaskView.php" <?php if($page_id==29) echo 'class="active"';?>>Assigned Tasks</a></li>
+                            <li><a href="notAssignedTaskView.php" <?php if($page_id==30) echo 'class="active"';?>>Non Assigned Tasks</a></li>
+                        </ul>
+                    </li>
                     <li>
                         <a href="purchaseView.php" <?php if($page_id==27) echo 'class="active"';?>>
                             <i class="fas fa-file-alt"></i>
