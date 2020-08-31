@@ -1,9 +1,0 @@
-<?php
-    session_start();
-    $_SESSION['user']="";
-    $_SESSION['control']="";
-    session_destroy();
-    unset($_SESSION['user']);
-    unset($_SESSION['control']);
-    header("location:login.php");
-?>

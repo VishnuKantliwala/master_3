@@ -12,7 +12,7 @@ class connect {
 	private static $_instance; //The single instance
 	private $_host = "localhost";
 	private $_username = "root";
-	private $_password = "";
+	private $_password = "root";
 	public $_database = "iced_master3";
 	/*
 	Get an instance of the Database

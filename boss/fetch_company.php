@@ -10,7 +10,7 @@
         $result = $cn->selectdb($sql);
         if($cn->numRows($result)>0){
 ?>
-    <ul id="company-list">
+    <ul id="company-list" style="height:200px;overflow-x:hidden;overflow-y:scroll;">
 <?php
             while($row=$cn->fetchAssoc($result)){
 ?>
