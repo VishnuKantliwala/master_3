@@ -33,7 +33,7 @@ $page_id=14;
             .attached-files ul li a{
                 cursor: pointer;
             }
-            #company-list{
+            #customer-list{
                 float:left;
                 list-style:none;
                 margin-top:-3px;
@@ -42,16 +42,16 @@ $page_id=14;
                 position: absolute;
                 z-index:1;
             }
-            #company-list li{
+            #customer-list li{
                 padding: 10px;
                 background: #f0f0f0;
                 border-bottom: #bbb9b9 1px solid;
             }
-            #company-list li:hover{
+            #customer-list li:hover{
                 background:#ece3d2;
                 cursor: pointer;
             }
-            #Ucompany-list{
+            /* #Ucompany-list{
                 float:left;
                 list-style:none;
                 margin-top:-3px;
@@ -68,7 +68,7 @@ $page_id=14;
             #Ucompany-list li:hover{
                 background:#ece3d2;
                 cursor: pointer;
-            }
+            } */
         </style>
     </head>
 
@@ -154,9 +154,9 @@ $page_id=14;
                                                         </div>
                                                         <div class="col-md-12">
                                                             <label class="control-label">Company Name</label>
-                                                            <input class="form-control form-white" placeholder="Company name" type="text" id="txtCompany" name="txtCompany"/>
+                                                            <input class="form-control form-white" placeholder="Company name" type="text" id="txtCompany" name="txtCompany" autocomplete="off"/>
                                                             <div id="suggesstion-box"></div>
-                                                            <input type="hidden" name="txtCompanyID" id="txtCompanyID">
+                                                            <input type="hidden" name="txtCompanyID" id="txtCompanyID" value="0">
                                                         </div>
                                                         <div class="col-md-12">
                                                             <label class="control-label">Mobile</label>
@@ -167,8 +167,12 @@ $page_id=14;
                                                             <input class="form-control form-white" placeholder="Email-ID" type="text" name="txtEmail" id="txtEmail"/>
                                                         </div>
                                                         <div class="col-md-12">
+                                                            <label class="control-label">Address</label>
+                                                            <textarea class="form-control form-white" placeholder="Address" name="txtAddress" id="txtAddress"></textarea>
+                                                        </div>
+                                                        <div class="col-md-12">
                                                             <label class="control-label">Description</label>
-                                                            <textarea class="form-control form-white" placeholder="Description" type="text" name="txtDesc" id="txtDesc"></textarea>
+                                                            <textarea class="form-control form-white" placeholder="Description" name="txtDesc" id="txtDesc"></textarea>
                                                         </div>
                                                         <div class="col-md-12">
                                                             <label class="control-label">Documents</label>
@@ -238,10 +242,11 @@ $page_id=14;
                                                             </select>
                                                         </div>
                                                         <div class="col-md-12">
-                                                            <label class="control-label">Company Name</label>
+                                                            <label class="control-label">Client Name</label>
                                                             <input class="form-control form-white" placeholder="Company name" type="text" id="txtUCompany" name="txtUCompany"/>
                                                             <div id="Usuggesstion-box"></div>
-                                                            <input type="hidden" name="txtUCompanyID" id="txtUCompanyID" name="txtUCompanyID">
+                                                            <input type="hidden" name="txtUCompanyID" id="txtUCompanyID" >
+                                                            <input type="hidden" id="txtUInqId" name="txtUInqId">
                                                         </div>
                                                         <div class="col-md-12">
                                                             <label class="control-label">Mobile</label>
@@ -250,6 +255,10 @@ $page_id=14;
                                                         <div class="col-md-12">
                                                             <label class="control-label">Email-ID</label>
                                                             <input class="form-control form-white" placeholder="Email-ID" type="text" name="txtUEmail" id="txtUEmail"/>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <label class="control-label">Address</label>
+                                                            <textarea class="form-control form-white" placeholder="Address" name="txtUAddress" id="txtUAddress"></textarea>
                                                         </div>
                                                         <div class="col-md-12">
                                                             <label class="control-label">Description</label>
@@ -360,7 +369,7 @@ $page_id=14;
                     }else{
                         $.ajax({
                             type: "POST",
-                            url: "fetch_company.php",
+                            url: "fetch_customer.php",
                             data:'keyword='+$(this).val(),
                             success: function(data){
                                 $("#suggesstion-box").show();
@@ -370,38 +379,40 @@ $page_id=14;
                         });
                     }
                 });
-                $("#txtUCompany").keyup(function(){
-                    if($("#txtUCompany").val() == ""){
-                        $("#txtUCompanyID").val('');
-                    }else{
-                        $.ajax({
-                            type: "POST",
-                            url: "fetch_Ucompany.php",
-                            data:'keyword='+$(this).val(),
-                            success: function(data){
-                                $("#Usuggesstion-box").show();
-                                $("#Usuggesstion-box").html(data);
-                                $("#txtUCompany").css("background","#FFF");
-                            }
-                        });
-                    }
-                });
+                // $("#txtUCompany").keyup(function(){
+                //     if($("#txtUCompany").val() == ""){
+                //         $("#txtUCompanyID").val('');
+                //     }else{
+                //         $.ajax({
+                //             type: "POST",
+                //             url: "fetch_Ucompany.php",
+                //             data:'keyword='+$(this).val(),
+                //             success: function(data){
+                //                 $("#Usuggesstion-box").show();
+                //                 $("#Usuggesstion-box").html(data);
+                //                 $("#txtUCompany").css("background","#FFF");
+                //             }
+                //         });
+                //     }
+                // });
             });
-            function selectCompany(name,id) {
+            function selectCustomer(name,id) {
                 $("#txtCompany").val(name);
                 $("#txtCompanyID").val(id);
                 $("#suggesstion-box").hide();
                 $.ajax({
-                    url: "fetch_company_detail.php",
-                    data: {inquiry_id:id},
+                    url: "fetch_customer_detail.php",
+                    data: {customer_id:id},
                     type: "POST",
                     success: function(data) {
                         //console.log(data);
                         if(data!="False"){
                             data = JSON.parse(data);
-                            $("#txtMobile").val(data.mobile_no);
-                            $("#txtEmail").val(data.email_id);
-                            $("#txtStatus").val(data.inquiry_status);
+                            $("#txtMobile").val(data.shipper_phone1);
+                            $("#txtEmail").val(data.shipper_email);
+                            $("#txtAddress").val(data.shipper_address);
+                            
+                            // $("#txtStatus").val(data.inquiry_status);
                         }
                     }
                 });
@@ -409,25 +420,25 @@ $page_id=14;
             function addInquiry() {
                 $("#add-category").modal("show");
             }
-            function selectUCompany(name,id) {
-                $("#txtUCompany").val(name);
-                $("#txtUCompanyID").val(id);
-                $("#Usuggesstion-box").hide();
-                $.ajax({
-                    url: "fetch_company_detail.php",
-                    data: {inquiry_id:id},
-                    type: "POST",
-                    success: function(data) {
-                        //console.log(data);
-                        if(data!="False"){
-                            data = JSON.parse(data);
-                            $("#txtUMobile").val(data.mobile_no);
-                            $("#txtUEmail").val(data.email_id);
-                            $("#txtYStatus").val(data.inquiry_status);
-                        }
-                    }
-                });
-            }
+            // function selectUCompany(name,id) {
+            //     $("#txtUCompany").val(name);
+            //     $("#txtUCompanyID").val(id);
+            //     $("#Usuggesstion-box").hide();
+            //     $.ajax({
+            //         url: "fetch_company_detail.php",
+            //         data: {inquiry_id:id},
+            //         type: "POST",
+            //         success: function(data) {
+            //             //console.log(data);
+            //             if(data!="False"){
+            //                 data = JSON.parse(data);
+            //                 $("#txtUMobile").val(data.mobile_no);
+            //                 $("#txtUEmail").val(data.email_id);
+            //                 $("#txtYStatus").val(data.inquiry_status);
+            //             }
+            //         }
+            //     });
+            // }
             var calendar = $("#calendar").fullCalendar({
                 editable:true,
                 contentHeight: "auto",
@@ -495,32 +506,35 @@ $page_id=14;
                             data = JSON.parse(data);
                             $("#txtUStart").val(data.inquiry_stime);
                             $("#txtUEnd").val(data.inquiry_etime);
-                            $("#txtUCompany").val(data.company_name);
-                            $("#txtUCompanyID").val(data.inquiry_id);
+                            $("#txtUCompany").val(data.shipper_name);
+                            $("#txtUCompanyID").val(data.shipper_id);
                             $("#txtUDesc").val(data.description);
-                            $("#txtUMobile").val(data.mobile_no);
-                            $("#txtUEmail").val(data.email_id);
+                            $("#txtUMobile").val(data.shipper_phone1);
+                            $("#txtUEmail").val(data.shipper_email);
+                            $("#txtUAddress").val(data.shipper_address);
                             $("#txtUAttend").val(data.attendant_id);
                             $("#txtUColor").val(data.inquiry_color);
                             $("#txtUID").val(data.inquiry_detail_id);
+                            $("#txtUInqId").val(data.inquiry_id);
                             $("#txtImg").val(data.meeting_document);
-                            $("#txtUStatus").val(data.inquiry_status);
+                            $("#txtUStatus").val(data.status);
                             var imgs = data.meeting_document.split(",");
                             imgs.pop();
                             var img = "";
                             jQuery.each(imgs,function(i,val) {
                                 var ext = val.substring(val.lastIndexOf(".")+1);
                                 if(ext=="pdf"){
-                                    img+="<li class='list-inline-item file-box'><a href='inquiry/"+val+"' target='_blank'><img src='assets/file/pdf.png' class='img-fluid img-thumbnail' alt='attached-img' width='80'></a><p class='font-13 mb-1 text-muted'><small><a onclick='imgDel("+data.inquiry_detail_id+",\""+val+"\")'>Delete</a></small></p></li>";
-                                }else if(ext=="png" || ext=="jpg" || ext=="jpeg" || ext=="gif"){
-                                    img+="<li class='list-inline-item file-box'><a href='inquiry/"+val+"' target='_blank'><img src='inquiry/"+val+"' class='img-fluid img-thumbnail' alt='attached-img' width='80'></a><p class='font-13 mb-1 text-muted'><small><a onclick='imgDel("+data.inquiry_detail_id+",\""+val+"\")'>Delete</a></small></p></li>";
+                                    $img_name = "assets/file/pdf.png";
+                                 }else if(ext=="png" || ext=="jpg" || ext=="jpeg" || ext=="gif"){
+                                    $img_name = "inquiry/"+data.shipper_id+"/"+val;
                                 }else if(ext=="doc" || ext=="docx"){
-                                    img+="<li class='list-inline-item file-box'><a href='inquiry/"+val+"' target='_blank'><img src='assets/file/doc.png' class='img-fluid img-thumbnail' alt='attached-img' width='80'></a><p class='font-13 mb-1 text-muted'><small><a onclick='imgDel("+data.inquiry_detail_id+",\""+val+"\")'>Delete</a></small></p></li>";
+                                    $img_name = "assets/file/doc.png";
                                 }else if(ext=="xls" || ext=="xlsx"){
-                                    img+="<li class='list-inline-item file-box'><a href='inquiry/"+val+"' target='_blank'><img src='assets/file/xls.png' class='img-fluid img-thumbnail' alt='attached-img' width='80'></a><p class='font-13 mb-1 text-muted'><small><a onclick='imgDel("+data.inquiry_detail_id+",\""+val+"\")'>Delete</a></small></p></li>";
+                                    $img_name = "assets/file/xls.png";
                                 }else if(ext=="txt"){
-                                    img+="<li class='list-inline-item file-box'><a href='inquiry/"+val+"' target='_blank'><img src='assets/file/txt.png' class='img-fluid img-thumbnail' alt='attached-img' width='80'></a><p class='font-13 mb-1 text-muted'><small><a onclick='imgDel("+data.inquiry_detail_id+",\""+val+"\")'>Delete</a></small></p></li>";
+                                    $img_name = "assets/file/txt.png";
                                 }
+                                img+="<li class='list-inline-item file-box'><a href='inquiry/"+data.shipper_id+"/"+val+"' target='_blank'><img src='"+$img_name+"' class='img-fluid img-thumbnail' alt='attached-img' width='80'></a><p class='font-13 mb-1 text-muted'><small><a onclick='imgDel("+data.inquiry_detail_id+",\""+val+"\","+data.shipper_id+")'>Delete</a></small></p></li>";
                             });
                             $(".attached-files ul li").remove();
                             $(".attached-files ul").append(img);
@@ -542,6 +556,7 @@ $page_id=14;
                     url:'insert_inquiry.php',
                     data:data,
                     success:function(data){
+                        console.log(data);
                         calendar.fullCalendar('refetchEvents');
                         document.getElementById("formInsert").reset();
                     }
@@ -578,11 +593,11 @@ $page_id=14;
                     }
                 });
             });
-            function imgDel(id,name) {
+            function imgDel(id,name,shipper_id) {
                 $.ajax({
                     type:'POST',
                     url:'delete_image.php',
-                    data:{inquiry_detail_id:id,img:name},
+                    data:{inquiry_detail_id:id,img:name,shipper_id:shipper_id},
                     success:function(data){
                         //data=$.trim(data);
                         //console.log(data);
@@ -594,18 +609,18 @@ $page_id=14;
                             var img = "";
                             jQuery.each(imgs,function(i,val) {
                                 var ext = val.substring(val.lastIndexOf(".")+1);
-                                //console.log(ext);
                                 if(ext=="pdf"){
-                                    img+="<li class='list-inline-item file-box'><a href='inquiry/"+val+"' target='_blank'><img src='assets/file/pdf.png' class='img-fluid img-thumbnail' alt='attached-img' width='80'></a><p class='font-13 mb-1 text-muted'><small><a onclick='imgDel("+id+",\""+val+"\")'>Delete</a></small></p></li>";
-                                }else if(ext=="png" || ext=="jpg" || ext=="jpeg" || ext=="gif"){
-                                    img+="<li class='list-inline-item file-box'><a href='inquiry/"+val+"' target='_blank'><img src='inquiry/"+val+"' class='img-fluid img-thumbnail' alt='attached-img' width='80'></a><p class='font-13 mb-1 text-muted'><small><a onclick='imgDel("+id+",\""+val+"\")'>Delete</a></small></p></li>";
+                                    $img_name = "assets/file/pdf.png";
+                                 }else if(ext=="png" || ext=="jpg" || ext=="jpeg" || ext=="gif"){
+                                    $img_name = "inquiry/"+data.shipper_id+"/"+val;
                                 }else if(ext=="doc" || ext=="docx"){
-                                    img+="<li class='list-inline-item file-box'><a href='inquiry/"+val+"' target='_blank'><img src='assets/file/doc.png' class='img-fluid img-thumbnail' alt='attached-img' width='80'></a><p class='font-13 mb-1 text-muted'><small><a onclick='imgDel("+id+",\""+val+"\")'>Delete</a></small></p></li>";
+                                    $img_name = "assets/file/doc.png";
                                 }else if(ext=="xls" || ext=="xlsx"){
-                                    img+="<li class='list-inline-item file-box'><a href='inquiry/"+val+"' target='_blank'><img src='assets/file/xls.png' class='img-fluid img-thumbnail' alt='attached-img' width='80'></a><p class='font-13 mb-1 text-muted'><small><a onclick='imgDel("+id+",\""+val+"\")'>Delete</a></small></p></li>";
+                                    $img_name = "assets/file/xls.png";
                                 }else if(ext=="txt"){
-                                    img+="<li class='list-inline-item file-box'><a href='inquiry/"+val+"' target='_blank'><img src='assets/file/txt.png' class='img-fluid img-thumbnail' alt='attached-img' width='80'></a><p class='font-13 mb-1 text-muted'><small><a onclick='imgDel("+id+",\""+val+"\")'>Delete</a></small></p></li>";
+                                    $img_name = "assets/file/txt.png";
                                 }
+                                img+="<li class='list-inline-item file-box'><a href='inquiry/"+data.shipper_id+"/"+val+"' target='_blank'><img src='"+$img_name+"' class='img-fluid img-thumbnail' alt='attached-img' width='80'></a><p class='font-13 mb-1 text-muted'><small><a onclick='imgDel("+data.inquiry_detail_id+",\""+val+"\","+data.shipper_id+" )'>Delete</a></small></p></li>";
                             });
                             $(".attached-files ul li").remove();
                             $(".attached-files ul").append(img);
