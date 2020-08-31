@@ -13,35 +13,36 @@ $cn->connectdb();
 $page_id=22;
 ?>
 <?php
+$error = "";
 if (isset($_POST['Submit'])) {
     $customer = $_POST['txtShipperID'];
-    $emp = $_POST['txtEmployee'];
-    $type = $_POST['txtType'];
+    $taskName = $_POST['txtTaskName'];
+    $taskQuantity = $_POST['txtTaskQuantity'];
     $desc = $_POST['txtDesc'];
     $files = "";
-    //$data = date("Y-d-m H:i:s");
+    $date = date("Y-m-d h:i:s");
+    $status = 0;
+
     //$date = getdate();
     //$date = $date['year']."-".$date['mon']."-".$date['mday']." ".$date['hours'].":".$date['minutes'].":".$date['seconds'];
-    $n = count($_FILES['txtFile']['name']);
-    $size = array_sum($_FILES['txtFile']['size']);
-    $status = "Created";
-    if($size>0){
-        for ($i=0; $i < $n; $i++) { 
-            $name = str_shuffle(md5(rand(0,10000)));
-            $ext = strtolower(substr($_FILES['txtFile']['name'][$i], strrpos($_FILES['txtFile']['name'][$i],".")));
-            $name .=$ext;
-            move_uploaded_file($_FILES["txtFile"]["tmp_name"][$i],"task/" .$name);
-            $files.=$name.",";
-        }
+    
+    if(trim($customer) == ""){
+        $error = "* No customer exists with same name";
+
     }
-    if(isset($_POST['chkOther'])){
-        $sql = "INSERT INTO tbl_task(shipper_id,uname, task_type, task_desc, task_files, task_status, task_cdate) VALUES('0','".$emp."','".$type."','".$desc."','".$files."','".$status."',SYSDATE())";
-    }else{
-        $sql = "INSERT INTO tbl_task(shipper_id,uname,task_type,task_desc,task_files,task_status,task_cdate) VALUES('".$customer."','".$emp."','".$type."','".$desc."','".$files."','".$status."',SYSDATE())";
+    else
+    {
+        $shipper_id = $customer;
+        $sql = "INSERT INTO tbl_task(service_inclusion_id, shipper_id, task_name, task_quantity, task_description, task_date, task_status) VALUES('0','".$shipper_id."','".$taskName."','".$taskQuantity."','".$desc."','".$date."','".$status."')";
+        $cn->insertdb($sql);
+        header("location:notAssignedTaskView.php");
     }
-    echo $sql;
-    $cn->insertdb($sql);
-    //header("location:taskview.php");
+
+    
+
+
+    // echo $sql;
+    
 }
 ?>
 <!DOCTYPE html>
@@ -133,44 +134,36 @@ if (isset($_POST['Submit'])) {
                                         <div class="p-2">
                                             <form class="form-horizontal" enctype="multipart/form-data" role="form" method="post">
                                                 <div class="form-group row">
+                                                    <h3 style="color:red" ><?echo $error?></h3>
+                                                </div>
+                                                <div class="form-group row">
                                                     <label class="col-sm-2  col-form-label" for="txtCustomer">Customer</label>
                                                     <div class="col-sm-10">
-                                                        <input type="text" id="txtShipper" name="txtShipper" class="form-control" placeholder="Name">
+                                                        <input type="text" id="txtShipper" name="txtShipper" class="form-control" placeholder="Customer Name">
                                                         <div id="suggesstion-box"></div>
-                                                        <input type="hidden" id="txtShipperID" name="txtShipperID" class="form-control">
-                                                        <br> Other
-                                                        <input type="checkbox" name="chkOther" id="chkOther" checked />
+                                                        <input type="hidden" id="txtShipperID" name="txtShipperID" class="form-control" value="">
+                                                        
                                                     </div>
                                                 </div>
+
                                                 <div class="form-group row">
-                                                    <label class="col-sm-2  col-form-label" for="txtEmployee">Employee</label>
+                                                    <label class="col-sm-2  col-form-label" for="txtCustomer">Task Name</label>
                                                     <div class="col-sm-10">
-                                                      <select name="txtEmployee" id="txtEmployee" class="form-control">
-                                                    <?php
-                                                        $sql="SELECT uname FROM admintable";
-                                                        $result = $cn->selectdb($sql);
-                                                        while ($row=$cn->fetchAssoc($result)) {
-                                                    ?>
-                                                          <option value="<?php echo $row['uname'];?>"><?php echo $row['uname'];?></option>
-                                                    <?php
-                                                        }
-                                                    ?>
-                                                      </select>
+                                                        <input type="text" id="txtTaskName" name="txtTaskName" class="form-control" placeholder="Task Name">
+                                                        
+                                                        
                                                     </div>
                                                 </div>
+
                                                 <div class="form-group row">
-                                                    <label class="col-sm-2  col-form-label" for="txtType">Task Type</label>
+                                                    <label class="col-sm-2  col-form-label" for="txtCustomer">Quantity</label>
                                                     <div class="col-sm-10">
-                                                        <div class="custom-control custom-radio">
-                                                            <input type="radio" checked id="customRadio1" name="txtType" class="custom-control-input" value="New">
-                                                            <label class="custom-control-label" for="customRadio1">New</label>
-                                                        </div>
-                                                        <div class="custom-control custom-radio">
-                                                            <input type="radio" id="customRadio2" name="txtType" class="custom-control-input">
-                                                            <label class="custom-control-label" for="customRadio2" value="Support">Support</label>
-                                                        </div>
+                                                        <input type="number" id="txtTaskQuantity" name="txtTaskQuantity" class="form-control" placeholder="Quantity">
+                                                        
+                                                        
                                                     </div>
                                                 </div>
+                                                
                                                 <div class="form-group row">
                                                     <label class="col-sm-2  col-form-label" for="txtDesc">Description</label>
                                                     <div class="col-sm-10">
@@ -181,17 +174,13 @@ if (isset($_POST['Submit'])) {
                                                       </script>
                                                     </div>
                                                 </div>
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2  col-form-label">Files</label>
-                                                    <div class="col-sm-10">
-                                                      <input type="file" name="txtFile[]" class="form-control" multiple>
-                                                    </div>
-                                                </div>
+
+                                                
                                                 <div class="form-group row">
                                                     <label class="col-sm-2  col-form-label" for="example-placeholder"></label>
                                                     <div class="col-sm-10">
                                                         <button type="submit" class="btn btn-primary width-md" name="Submit">Add</button>
-                                                        <a href="taskview.php" class="btn btn-lighten-primary waves-effect waves-primary width-md">Cancel</a>
+                                                        <a href="notAssignedTaskView.php" class="btn btn-lighten-primary waves-effect waves-primary width-md">Cancel</a>
                                                     </div>
                                                 </div>
                                             </form>

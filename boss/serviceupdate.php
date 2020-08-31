@@ -34,7 +34,15 @@ if (isset($_POST['Submit'])) {
     }else{
         $renew = 'no';
     }
-    $sql = "UPDATE tbl_product SET name='" . $name . "', `desc`='".$desc."', code='".$code."', is_renew='".$renew."',gst_rate='".$gst."' WHERE product_id='" . $product_id . "'";
+
+    // If serice is task then
+    if(isset($_POST['chkTask'])){
+        $task = 'yes';
+    }else{
+        $task = 'no';
+    }
+
+    $sql = "UPDATE tbl_product SET name='" . $name . "', `desc`='".$desc."', code='".$code."', is_renew='".$renew."',gst_rate='".$gst."', is_task='".$task."' WHERE product_id='" . $product_id . "'";
     //echo $sql;
     $cn->insertdb($sql);
     header("location:serviceview.php");
@@ -150,6 +158,15 @@ if (isset($_POST['Submit'])) {
                                                         <input type="checkbox" name="chkRenew" <?php if($row['is_renew']=="yes") echo "checked";?> data-plugin="switchery" data-color="#1AB394" data-secondary-color="#ED5565" data-size="small" />
                                                     </div>
                                                 </div>
+
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2  col-form-label" for="txtCode">Task</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="checkbox" name="chkTask" <?php if($row['is_task']=="yes") echo "checked";?> data-plugin="switchery" data-color="#1AB394" data-secondary-color="#ED5565" data-size="small" />
+                                                    </div>
+                                                </div>
+
+
                                                 <div class="form-group row">
                                                     <label class="col-sm-2  col-form-label" for="example-placeholder"></label>
                                                     <div class="col-sm-10">
