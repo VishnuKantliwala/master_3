@@ -52,7 +52,7 @@
                     </li>
                     <li <?php if($page_id==29 OR $page_id==30 ) echo 'class="active"';?>>
                         <a href="#" <?php if($page_id==2 OR $page_id==30) echo 'class="active"';?>>
-                            <i class="mdi mdi-texture"></i>
+                            <i class="mdi fas fa-tasks"></i>
                             <span> Tasks </span>
                             <span class="menu-arrow"></span>
                         </a>

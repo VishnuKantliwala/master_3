@@ -19,12 +19,14 @@ $page_id=1;
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <link href="assets/libs/switchery/switchery.min.css" rel="stylesheet" type="text/css" />
     <!--Morris Chart-->
     <link rel="stylesheet" href="assets/libs/morris-js/morris.css" />
     <!-- App css -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    <script src="assets/libs/ckeditor/ckeditor.js"></script>
 </head>
 
 <body>
@@ -76,12 +78,12 @@ $page_id=1;
                         <div class="col-4">
                             <div class="card-box">
                                 <h4 class="header-title">New Tasks</h4>
-                                
+
 
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="p-2 new-tasks-result">
-                                           
+
                                         </div>
                                     </div>
 
@@ -93,12 +95,12 @@ $page_id=1;
 
                         <div class="col-4">
                             <div class="card-box">
-                                <h4 class="header-title">Running Tasks</h4>                               
+                                <h4 class="header-title">Running Tasks</h4>
 
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="p-2 running-tasks-result">
-                                           
+
                                         </div>
                                     </div>
 
@@ -111,12 +113,12 @@ $page_id=1;
                         <div class="col-4">
                             <div class="card-box">
                                 <h4 class="header-title">Completed Tasks</h4>
-                                
+
 
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="p-2 completed-tasks-result">
-                                           
+
                                         </div>
                                     </div>
 
@@ -137,14 +139,63 @@ $page_id=1;
                                 </div>
                                 <div style="width:100%;display:block;text-align:center; display:none"
                                     class="taskLoader">
-                                    
+
                                     <img src="./assets/images/loading.gif" />
-                                    <br/>
+                                    <br />
                                 </div>
                                 <div class="modal-body" id="TaskModalBody">
-                                    
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="RunningTaskModal" class="modal fade">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+
+                                    <h4 class="modal-title">Task instructions: <span id="task_name"></span></h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 </div>
                                 
+                                <div class="modal-body" id="RunningTaskModalBody">
+
+                                </div>
+
+                                <div style="width:100%;display:block;padding:20px">
+                                    <form id="runningTaskForm">
+                                        <input type="hidden" name="task_emp_id" id="modal_task_emp_id" />
+                                        <textarea name="task_emp_description"  id="task_emp_description"  class="form-control task_emp_description"
+                                            placeholder="Description"></textarea>
+                                        <script>
+                                        
+                                        </script>
+                                        <br />
+                                        <div class="quantityList row " style="width:100%;padding:20px"> 
+                                            
+                                        </div>
+                                        <div style="width:100%;display:block !important;text-align:center; display:none"
+                                            class="taskUpdateResult">
+
+                                            <br />
+                                        </div>
+                                        
+                                        <button class="btn btn-success btnRunningTask" type="submit" name="">Update</button>
+                                    </form>
+                                </div>
+
+                                
+
+                                <div style="width:100%;display:block;text-align:center; display:none"
+                                    class="taskLoader">
+
+                                    <img src="./assets/images/loading.gif" />
+                                    <br />
+                                </div>
+
+
                             </div>
                         </div>
                     </div>
@@ -170,9 +221,14 @@ $page_id=1;
             <!--script src="assets/js/pages/dashboard.init.js"></script-->
 
             <!-- App js -->
+            <script src="assets/libs/switchery/switchery.min.js"></script>
             <script src="assets/js/app.min.js"></script>
+            
+            
 
             <script src="assets/js/gettasks.js"></script>
+
+            
 
 
 
