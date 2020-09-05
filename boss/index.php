@@ -26,6 +26,7 @@ $page_id=1;
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/styles.css" rel="stylesheet" type="text/css" />
     <script src="assets/libs/ckeditor/ckeditor.js"></script>
 </head>
 
@@ -75,8 +76,8 @@ $page_id=1;
                 <!-- Start Content-->
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-4">
-                            <div class="card-box">
+                        <div class="col-md-4 ">
+                            <div class="card-box scroller-div">
                                 <h4 class="header-title">New Tasks</h4>
 
 
@@ -93,8 +94,8 @@ $page_id=1;
                             </div> <!-- end card-box -->
                         </div><!-- end col -->
 
-                        <div class="col-4">
-                            <div class="card-box">
+                        <div class="col-md-4">
+                            <div class="card-box scroller-div">
                                 <h4 class="header-title">Running Tasks</h4>
 
                                 <div class="row">
@@ -110,8 +111,8 @@ $page_id=1;
                             </div> <!-- end card-box -->
                         </div><!-- end col -->
 
-                        <div class="col-4">
-                            <div class="card-box">
+                        <div class="col-md-4">
+                            <div class="card-box scroller-div">
                                 <h4 class="header-title">Completed Tasks</h4>
 
 
@@ -167,6 +168,7 @@ $page_id=1;
                                 <div style="width:100%;display:block;padding:20px">
                                     <form id="runningTaskForm">
                                         <input type="hidden" name="task_emp_id" id="modal_task_emp_id" />
+                                        <input type="text" name="modal_task_emp_quantity" id="modal_task_emp_quantity" />
                                         <textarea name="task_emp_description"  id="task_emp_description"  class="form-control task_emp_description"
                                             placeholder="Description"></textarea>
                                         <script>
@@ -210,6 +212,7 @@ $page_id=1;
             <!-- Vendor js -->
             <script src="assets/js/vendor.min.js"></script>
 
+            <script src="assets/libs/sweetalert2/sweetalert2.min.js"></script>
             <!-- knob plugin -->
             <!--script src="assets/libs/jquery-knob/jquery.knob.min.js"></script-->
 
@@ -224,10 +227,6 @@ $page_id=1;
             <script src="assets/libs/switchery/switchery.min.js"></script>
             <script src="assets/js/app.min.js"></script>
             
-            
-
-            <script src="assets/js/gettasks.js"></script>
-
             
 
 

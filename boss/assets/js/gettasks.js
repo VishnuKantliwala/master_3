@@ -129,6 +129,7 @@ function viewRunningTask(id) {
 
                     $("#task_name").html(data[0].task_name);
                     $("#modal_task_emp_id").val(data[0].task_emp_id);
+                    $("#modal_task_emp_quantity").val(data[0].task_emp_quantity);
                     $("#task_emp_description").val(data[0].task_emp_description);
                     CKEDITOR.replace('task_emp_description');
 
@@ -391,9 +392,4 @@ $(document).ready(function(){
     getRunningTasks();
     getCompleteTasks();
     // To get records
-    
-
-    
-      
-    
 });

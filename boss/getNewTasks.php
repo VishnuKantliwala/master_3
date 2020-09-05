@@ -8,7 +8,7 @@ $filter = "";
 
 
 
-$qry = "SELECT t.*,te.*, u.user_id, u.user_name, s.shipper_name FROM tbl_task AS t, tbl_task_emp AS te, tbl_user u, tbl_shipper AS s WHERE t.task_id = te.task_id AND te.user_id = u.user_id AND s.shipper_id = t.shipper_id AND u.user_id = '".$_SESSION['user_id']."' AND task_emp_status = 0";
+$qry = "SELECT t.*,te.*, u.user_id, u.user_name, s.shipper_name FROM tbl_task AS t, tbl_task_emp AS te, tbl_user u, tbl_shipper AS s WHERE t.task_id = te.task_id AND te.user_id = u.user_id AND s.shipper_id = t.shipper_id AND u.user_id = '".$_SESSION['user_id']."' AND task_emp_status = 0 AND DATEDIFF( te.date_assign , CURDATE()) <=0 ORDER BY te.recordListingID";
 
 $sql = $cn->selectdb($qry);
 //echo $qry;

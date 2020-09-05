@@ -1,6 +1,0 @@
-[22-May-2020 10:09:25 UTC] PHP Notice:  Undefined index: employee_id in /home/iced/public_html/master3/boss/login.php on line 32
-[22-May-2020 10:09:25 UTC] PHP Notice:  Undefined index: godown_id in /home/iced/public_html/master3/boss/login.php on line 33
-[22-May-2020 10:10:48 UTC] PHP Notice:  Undefined index: employee_id in /home/iced/public_html/master3/boss/login.php on line 32
-[22-May-2020 10:10:48 UTC] PHP Notice:  Undefined index: godown_id in /home/iced/public_html/master3/boss/login.php on line 33
-[22-May-2020 10:14:18 UTC] PHP Notice:  Undefined variable: page in /home/iced/public_html/master3/boss/createInvoice.php on line 31
-[22-May-2020 10:21:18 UTC] PHP Notice:  Undefined variable: data in /home/iced/public_html/master3/boss/view_task.php on line 54

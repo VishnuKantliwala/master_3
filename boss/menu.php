@@ -1,4 +1,5 @@
 <!-- ========== Left Sidebar Start ========== -->
+<link href="assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
 <div class="left-side-menu">
     <div class="slimscroll-menu">
         <!-- User box -->
@@ -7,6 +8,110 @@
             <div class="dropdown">
                 <a class="text-dark dropdown-toggle h5 mt-2 mb-1 d-block"><?php echo $_SESSION['user'] . " (" . $_SESSION['control'] . ")"; ?></a>
             </div>
+            <p class="text-gray totalElapseTime mt-10">Loading...</p>            
+            
+        </div>
+
+        
+        <div class="col-md-12 clockDiv text-center">
+            <?
+            $timeOver = false;
+            $user_login_id = 0;
+            $sqlIsClockIn = $cn->selectdb("SELECT user_login_id FROM tbl_user_login WHERE DATEDIFF(user_login_date, CURDATE()) = 0 AND user_id = ".$_SESSION['user_id']." ");
+            if( $cn->numRows($sqlIsClockIn) == 0 )
+            {
+                $style = "display:none";
+            ?>
+                <button style="width:100%" class="btn btn-success btnClockIn" title="View" onClick="clockIn()"><i class="mdi mdi-clock"></i> Clock-in</button>
+
+            <?
+            }
+            else
+            {
+                $rowIsClockIn = $cn->fetchAssoc($sqlIsClockIn);
+                $user_login_id = $rowIsClockIn['user_login_id'];
+                
+                $sqlIsClockOut = $cn->selectdb("SELECT user_login_id FROM tbl_user_login WHERE DATEDIFF(user_login_date, CURDATE()) = 0 AND user_id = ".$_SESSION['user_id']." AND  user_login_status = 1");
+                if( $cn->numRows($sqlIsClockOut) > 0 )
+                {
+
+                    $rowIsClockOut = $cn->fetchAssoc($sqlIsClockOut);
+                    $user_login_id = $rowIsClockOut['user_login_id'];
+                    
+                    $style = "display:none";
+                    $timeOver = true;
+                    
+            ?>
+            <h5>[Today's time over.]</h5>
+            <?
+                }
+                else
+                {
+                    $style = "";
+                    
+                }
+            }
+
+            ?>
+            <button style="margin-bottom:10px;width:100%;<?echo $style?>" class="btn btn-blue btnClockOut" title="View" onClick="clockOut()"><i class="mdi mdi-clock-alert"></i> Clock-out</button>
+
+
+
+            <?
+            // $user_login_id = 0;
+            if(!$timeOver)
+            {
+                // echo $user_login_id;
+                $sqlISClockedIn = $cn->selectdb("SELECT user_login_log_id, user_login_log_status FROM tbl_user_login_log WHERE user_login_id = ".$user_login_id. " ORDER BY user_login_log_id DESC");
+                if( $cn->numRows($sqlISClockedIn) > 0 )
+                {
+                    $rowISClockedIn = $cn->fetchAssoc($sqlISClockedIn);
+                    $user_login_log_status = $rowISClockedIn['user_login_log_status'];
+                    if($user_login_log_status == 1)
+                    {
+                        
+                        $stylePlay = "display:none";
+                        $stylePause = "";
+                    }
+                    else
+                    {
+                        $stylePlay = "";
+                        $stylePause = "display:none";
+                    }
+                    
+                
+                }
+                else
+                {
+                    $stylePlay = $style;
+                    $stylePause = "display:none ";
+                }
+            }
+            else
+            {
+                $stylePlay = "display:none";
+                $stylePause = "display:none";
+            }
+            ?>
+                <button class="btn btn-blue btnStartTime" style="width:100%;<?echo $stylePlay?>" title="Start Session" onClick="startTimeIn()"><i class="mdi mdi-play"></i> </button>
+
+                <button class="btn btn-danger btnPauseTime" style="width:100%;<?echo $stylePause?>" title="Pause Session" onClick="startTimeOut()"><i class="mdi mdi-pause"></i> </button>
+            
+            
+
+            
+            
+            <div style="width:100%;display:block;text-align:center; display:none"
+                class="clockLoader">
+
+                <img src="./assets/images/loading.gif" />
+                <br />
+            </div>
+            
+        </div>
+        
+
+        <div class="col-md-12 text-center">
             <ul class="list-inline">
                 <li class="list-inline-item">
                     <a href="logout.php" class="text-custom">
@@ -137,21 +242,11 @@
                             <span> Upcoming Renewal </span>
                         </a>
                     </li>
-                    <li>
-                        <a href="taskview.php" <?php if($page_id==22) echo 'class="active"';?>>
-                            <i class="fas fa-tasks"></i>
-                            <span> Task </span>
-                        </a>
-                    </li>
+                    
                 <?php
                 }
                 ?>
-                <li>
-                    <a href="taskemp.php" <?php if($page_id==23) echo 'class="active"';?>>
-                        <i class="fas fa-tasks"></i>
-                        <span> Allocate Task </span>
-                    </a>
-                </li>
+                
                 <?php
                 if ($_SESSION['control'] == 'Employee') {
                 ?>
