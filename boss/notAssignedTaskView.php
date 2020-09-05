@@ -141,7 +141,7 @@ $page_id=25;
                 </div> <!-- container-fluid -->
             </div> <!-- content -->
             <div id="EmployeeModal" class="modal fade">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
 
@@ -160,6 +160,8 @@ $page_id=25;
                                             <th style="text-align:center;">Employee Name</th>
                                             <th style="text-align:center;">Quantity</th>
                                             <th style="text-align:center;">Repeatation</th>
+                                            <th style="text-align:center;">Total Reps</th>
+                                            <th style="text-align:center;">Expected Hours</th>
 
                                         </tr>
                                     </thead>
@@ -318,6 +320,8 @@ $page_id=25;
                                         "<option value='4'>Half Yearly</option>" +
                                         "<option value='5'>Yearly</option>" +
                                         "</select></td>" +
+                                        "<td><input class='form-control' type='number' name='total_reps[]'/></td>"+
+                                        "<td><input class='form-control' type='number' name='expected_hours[]'/></td>"+
                                         "</tr>";
                                 }
                                 row += "</tbody>";
@@ -368,11 +372,12 @@ $page_id=25;
                             
 
                         } else {
-                            $(".btnAssignTask").show();
+                            
                             
                         }
                         $('.assignTaskResult').html(result);
                         $('.assignTaskLoader').hide(500);
+                        $(".btnAssignTask").show();
 
                     });
                 }, 500);

@@ -127,3 +127,9 @@
 
         <!-- Right bar overlay-->
         <div class="rightbar-overlay"></div>
+
+        
+        <script src="assets/js/gettasks.js" defer></script>
+
+            
+<script src="assets/js/clock-management.js" defer></script>

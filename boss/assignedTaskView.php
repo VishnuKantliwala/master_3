@@ -91,19 +91,75 @@ $page_id=25;
                                 <a href="task.php" class="btn btn-primary width-md">Add</a>
                             </div>
 
-                            <div class="col-lg-4">
-                                <input class="form-control input-daterange-datepicker" type="text" name="daterange"
-                                    id="daterange" placeholder="Select Date Range" />
-                            </div>
-                            <div class="col-sm-1">
-                                <button id="applyFilter" class="btn btn-primary width-md">Filter</button>
-                            </div>
-                            <div class="col-sm-1">
-                                <button id="clearFilter" class="btn btn-primary width-md">Clear</button>
-                            </div>
                             <!-- <div class="col-sm-1">
                                 <button id="clearFilter" class="btn btn-primary width-md openTaskModal">Open modal</button>
                             </div> -->
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <select class="form-control" type="text" name="ddl_shipper_id"
+                                    id="ddl_shipper_id" >
+                                    <option value="0">-- SELECT CLIENT --</option>
+                                    <?
+                                    $sqlShipper = $cn->selectdb("SELECT s.shipper_name, s.shipper_id FROM tbl_shipper AS s, tbl_task AS t WHERE s.shipper_id = t.shipper_id ORDER BY s.shipper_name");
+                                    if( $cn->numRows($sqlShipper) > 0 )
+                                    {
+                                        while($rowShipper = $cn->fetchAssoc($sqlShipper))
+                                        {
+                                    ?>
+                                    <option value="<?echo $rowShipper['shipper_id']?>"><?echo $rowShipper['shipper_name']?></option>
+                                    <?
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-control" type="text" name="ddl_user_id"
+                                    id="ddl_user_id" >
+                                    <option value="0">-- SELECT USER --</option>
+                                    <?
+                                    $sqlShipper = $cn->selectdb("SELECT u.user_name, u.user_id FROM tbl_user AS u, tbl_task_emp AS te WHERE u.user_id = te.user_id ORDER BY u.user_name");
+                                    if( $cn->numRows($sqlShipper) > 0 )
+                                    {
+                                        while($rowShipper = $cn->fetchAssoc($sqlShipper))
+                                        {
+                                    ?>
+                                    <option value="<?echo $rowShipper['user_id']?>"><?echo $rowShipper['user_name']?></option>
+                                    <?
+                                        }
+                                    }
+                                    ?>
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-4">
+                                <select class="form-control" type="text" name="ddl_task_status"
+                                    id="ddl_task_status" >
+                                    <option value="0">All Tasks</option>
+                                    <option value="1">Running Tasks</option>
+                                    <option value="2">Complete Tasks</option>
+                                    
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <input class="form-control input-daterange-datepicker" type="text" name="daterange"
+                                    id="daterange" placeholder="Select Date Range" />
+                            </div>
+                            <div class="col-md-2">
+                                <button id="applyFilter" class="btn btn-primary width-md">Filter</button>
+                            </div>
+                            <div class="col-md-2">
+                                <button id="clearFilter" class="btn btn-primary width-md">Clear</button>
+                            </div>
+
+                            <div class="col-md-2">
+                                <button id="sorting" class="btn btn-primary width-md">Sorting</button>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
@@ -129,7 +185,15 @@ $page_id=25;
                                         </tr>
                                     </tfoot>
                                     <tbody>
-
+                                        <tr>
+                                            <td style="">
+                                                <div style="" class="">
+                                                    
+                                                    <img src="./assets/images/loading.gif" />
+                                                    
+                                                </div>
+                                            </td>
+                                        <tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -159,6 +223,70 @@ $page_id=25;
                     </div>
                 </div>
             </div>
+
+            <div id="TimelineModal" class="modal fade">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+
+                            <h4 class="modal-title">Task timeline: <span id="user_name"></span></h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div style="width:100%;display:block;text-align:center; display:none"
+                            class="timelineLoader">
+                            
+                            <img src="./assets/images/loading.gif" />
+                            <br/>
+                        </div>
+                        <div class="modal-body" id="TimelineModalBody">
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div id="SortingModal" class="modal fade">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+
+                            <h4 class="modal-title">Sorting tasks</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body" id="SortingModalBody">
+                            <form id="sortingModal" action="sortingAssignedTasks.php">
+                                <h5>Select employee</h5>
+                                <div class="form-group">
+                                <select name="user_id" class="form-control">
+                                <?
+                                $sqlFetchEmployee = $cn->selectdb( 'SELECT u.user_id, user_name FROM tbl_user AS u, tbl_task_emp AS te WHERE u.user_id = te.user_id GROUP BY u.user_id ORDER BY user_name' );
+                                if( $cn->numRows($sqlFetchEmployee) > 0 )
+                                {
+                                    while($rowFetchEmployee = $cn->fetchAssoc($sqlFetchEmployee))
+                                    {
+                                ?>
+                                    <option value="<? echo $rowFetchEmployee['user_id'] ?>"><? echo $rowFetchEmployee['user_name'] ?></option>
+                                <?
+                                    }
+                                }
+                                ?>    
+                                </select>
+                                </div>
+                                
+                                
+                                <div style="width:100%;display:block;text-align:center; display:none"
+                                    class="assignTaskLoader">
+                                    <img src="./assets/images/loading.gif" />
+                                </div>
+
+                                <button class="btn btn-success " type="submit" name="">Sort</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <?php
             include 'footer.php';
             ?>
@@ -193,7 +321,7 @@ $page_id=25;
             var end_date = "";
             $(document).ready(function() {
                 
-                getRecords("", "", "");
+                getRecords("", "", "", 0, 0, 0);
 
             });
             var counter = 0;
@@ -242,7 +370,10 @@ $page_id=25;
                 });
             }
 
-
+            $('#sorting').click(() => {
+                $("#SortingModal").modal("show");
+                $("#SortingModal").css("opacity", "1"); 
+            })
 
             function showTimeline(id, task_id) {
                 // alert(id);
@@ -289,7 +420,7 @@ $page_id=25;
                                 if(data[0].task_emp_status == 2)
                                 {
                                     status = "Submitted";
-                                    date = data[0].date_submit;
+                                    // date = data[0].date_submit;
                                     step = 100;
                                 }
 
@@ -322,7 +453,7 @@ $page_id=25;
             }
 
             function reappointTask(id, task_id) {
-                alert(id);
+                // alert(id);
                 
                 $(".timelineLoader").show(500);
                 $('.modal-body').html("<h3>Reappointing....</h3>");
@@ -352,12 +483,14 @@ $page_id=25;
             
 
             // To get records
-            function getRecords(shipper_id, from_date, end_date) {
+            function getRecords(shipper_id, from_date, end_date, user_id, task_status) {
                 counter++;
-                $.ajax({
+                $('#datatable > tbody').html('<tr><td style=""><div style="" class=""><img src="./assets/images/loading.gif" /></div></td><tr>');
+                setTimeout(() => {
+                    $.ajax({
                     url: "getAssignedTasks.php",
                     method: "POST",
-                    data: "shipper_id=" + shipper_id + "&from_date=" + from_date + "&end_date=" + end_date,
+                    data: "shipper_id=" + shipper_id + "&from_date=" + from_date + "&end_date=" + end_date + "&user_id=" + user_id + "&task_status=" + task_status,
                     success: function(data) {
                         //alert(data);
                         if (data != "false") {
@@ -400,34 +533,36 @@ $page_id=25;
 
                     }
                 });
+                }, 200);
+                
             }
             $("#applyFilter").on("click", function() {
-                var shipper_id = "";
-                var dateRange = $("#daterange").val().split("-");
-                var fromDate = dateRange[0].trim();
-                var endDate = dateRange[1].trim();
+                var fromDate = "";
+                var endDate = "";
+                if($("#daterange").val() != "")
+                {
+                    var dateRange = $("#daterange").val().split("-");
+                    fromDate = dateRange[0].trim();
+                    endDate = dateRange[1].trim();
+                }
+                
+
+                var shipper_id = $("#ddl_shipper_id").val();
+                var user_id = $("#ddl_user_id").val();
+                var task_status = $("#ddl_task_status").val();
+                
                 //alert(fromDate+" "+endDate);
-                getRecords(shipper_id, fromDate, endDate);
+                getRecords(shipper_id, fromDate, endDate, user_id, task_status);
             });
             $("#clearFilter").on("click", function() {
                 
                 $("#daterange").val("");
-                getRecords('', '', '');
+                $("#ddl_shipper_id").val("0");
+                $("#ddl_user_id").val("0");
+                $("#ddl_task_status").val("0");
+                getRecords('', '', '', 0, 0, 0);
             });
-            $("#payment").on("change", function() {
-                var payment = $("#payment").val();
-                var dateRange = $("#daterange").val() == "" ? "" : $("#daterange").val().split("-");
-                var fromDate = "";
-                var endDate = "";
-                if (dateRange != "") {
-                    fromDate = dateRange[0].trim() == dateRange[1].trim() ? "" : dateRange[0].trim();
-                    endDate = dateRange[0].trim() == dateRange[1].trim() ? "" : dateRange[1].trim();
-                }
-
-
-                getRecords(payment, fromDate, endDate);
-                //getRecords(taskId,'','');
-            });
+            
             </script>
 </body>
 
