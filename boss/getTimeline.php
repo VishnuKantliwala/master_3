@@ -33,6 +33,7 @@ if(mysqli_num_rows($sql) > 0)
         $returnObj[$i]["date_submit"]=$row['date_submit'];       
         $returnObj[$i]["task_emp_status"]=$row['task_emp_status'];       
         $returnObj[$i]["task_emp_duration"]=secondsToTime($row['task_emp_duration']);  
+        $returnObj[$i]["task_emp_expected_time"]=secondsToTime($row['task_emp_expected_time']);  
         
         $i++;
     }

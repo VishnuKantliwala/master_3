@@ -400,6 +400,7 @@ $page_id=25;
                                 const quantity = data[0].task_emp_quantity;
                                 const done_quantity = data[0].task_emp_quantity_done;
                                 const task_emp_duration = data[0].task_emp_duration;
+                                const task_emp_expected_time = data[0].task_emp_expected_time;
                                 
                                 
                                 const task_name = data[0].task_name;
@@ -431,7 +432,7 @@ $page_id=25;
                                     step = 33;
                                 }
                                 
-                                var row = "<h3>"+task_name+"</h3><div class='widget-detail-2 text-left'><h2 class='font-weight-normal mb-1'> "+status+" </h2><p class='text-muted mb-3' style='margin-bottom: 1px !important;'>Date - "+date+" | Total time : "+task_emp_duration+"</p><p class='text-muted mb-3'>Task - "+done_quantity+" / "+quantity+"</p></div>";
+                                var row = "<h3>"+task_name+"</h3><div class='widget-detail-2 text-left'><h2 class='font-weight-normal mb-1'> "+status+" </h2><p class='text-muted mb-3' style='margin-bottom: 1px !important;'>Date - "+date+"</p><p>Expected_time : "+task_emp_expected_time+" | Total time : "+task_emp_duration+"</p><p class='text-muted mb-3'>Task - "+done_quantity+" / "+quantity+"</p></div>";
 
                                 row+="<div class='progress progress-bar-alt-success progress-sm'><div class='progress-bar bg-success' role='progressbar' aria-valuenow='"+step+"' aria-valuemin='0' aria-valuemax='100' style='width: "+step+"%;'><span class='sr-only'>77% Complete</span></div></div>";
 
