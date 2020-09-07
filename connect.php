@@ -11,8 +11,8 @@ class connect {
 	public $_connection;
 	private static $_instance; //The single instance
 	private $_host = "localhost";
-	private $_username = "root";
-	private $_password = "";
+	private $_username = "iced_master3";
+	private $_password = "iced_master3";
 	public $_database = "iced_master3";
 	/*
 	Get an instance of the Database
